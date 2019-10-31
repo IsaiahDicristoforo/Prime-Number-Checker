@@ -17,7 +17,7 @@ namespace dicrisif_Assignment08
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new form_MainForm());
+            Application.Run(new form_PrimeForm());
         }
     }
 }

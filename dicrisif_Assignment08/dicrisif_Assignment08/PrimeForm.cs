@@ -1,6 +1,21 @@
 ﻿/*
+ * Isaiah Dicristoforo
+ * dicrisif@mail.uc.edu
  * 
+ * Assignment 08:  GUI with PrimeNumber method integration
+ * Due: 10/31/2019
+ * IT 3045: Contemporary Programming, Fall 2019
+ * Professor Bill Nicholson
  * 
+ * Description:  This program contains a graphical user interface that allows the user to enter a number in a text 
+ * box, or by importing a text file with numbers.  The program will then use the BigIntPrimeChecker class, which I created
+ * earlier in the semester to check to see if the users number is prime.  The result will is displayed in a window, highlighted in
+ * green if the number is prime, and red otherwise.  This program contains a lot of extra functionality, such as the ability to 
+ * import and export text files, and delete and sort the results in the list view.  There is still a lot of functionality 
+ * to make this "Ultimate" prime checker complete, but the current GUI still allows the user to preform a wide variety of 
+ * operations on the data as prime results are generated.  In the future I will make my code more modular by making custom controls,
+ * but because this is my first GUI project, I haven't gotten the hang of that yet.  Because of this, most of my methods are
+ * contained in the PrimeForm.cs partial class.  
  * 
  * 
  * Sources....
@@ -26,88 +41,109 @@
  * https://stackoverflow.com/questions/11624298/how-to-use-openfiledialog-to-select-a-folder/11624322
  * 
  * https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-open-files-using-the-openfiledialog-component
+ * 
+ * https://www.dotnetperls.com/parse
  */
 
 
 using PrimeNumber;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Numerics;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace dicrisif_Assignment08
 {
-    public partial class form_MainForm : Form
+    /// <summary>
+    /// This class provides the logic for the prime checker GUI
+    /// </summary>
+    public partial class form_PrimeForm : Form //Inheritence.  This class IS-A form.
     {
-        public form_MainForm()
+        /// <summary>
+        /// Constructor which intializes the GUI components.  The initialize method is located in the Designer.cs class.
+        /// </summary>
+        public form_PrimeForm()
         {
             InitializeComponent();
-            textBox_NumberToCheck.Select();
+            textBox_NumberToCheck.Select();//The user can begin entering numbers immediatly w/out clicking.
 
 
         }
 
+        /// <summary>
+        /// Cshecks if the users number is valid, and if so, triggers the calculation that determines if the number is prime.  
+        /// </summary>
+        /// <param name="sender">The object that triggered the event handler</param>
+        /// <param name="e">The event data</param>
         private void Btn_CheckNum_Click(object sender, EventArgs e)
         {
             try
             {
-                CheckNumber(BigInteger.Parse(textBox_NumberToCheck.Text));
+                //The CheckNumAndDisplayResult method does not validate input, as requested by the assignment.  
+                //If an exception is thrown, we simply catch the exception here.
+                CheckNumAndDisplayResult(BigInteger.Parse(textBox_NumberToCheck.Text)); 
 
 
             }
             catch
             {
-                AlertInvalidInput();
+                AlertInvalidInput(); //Displays a method box saying an exception was thrown.
             }
 
 
         }
-
+       
+        /// <summary>
+        /// Updates the labels which display the total results shown in the listview, and the total prime and composite numbers
+        /// </summary>
         public void UpdateStatistics()
         {
-            label_totalNums.Text = "Total Numbers: " + listView_PrimeCheckResults.Items.Count;
+            //Display the total number of results in the list view.
+            label_totalNums.Text = "Total Numbers: " + listView_PrimeCheckResults.Items.Count; 
 
+            //Display the total number of primes in the listView. The total primes in the list view are claculated by a seperate method.
             if (CalculateTotalPrimes() == 0)
             {
                 label_TotalPrimes.Text = "Total Primes:  0";
             }
             else
-            {
+            {   //If the text view is not empty, display the total primes, AND the percentage of primes.
                 label_TotalPrimes.Text = "Total Primes: " + CalculateTotalPrimes().ToString() + "\nPrime:" + Math.Round((double)CalculateTotalPrimes() / listView_PrimeCheckResults.Items.Count * 100) + "%";
 
             }
 
-            int totalComposites = listView_PrimeCheckResults.Items.Count - CalculateTotalPrimes();
+            //Calculate the total number of composite numbers in the list view.
+            int totalComposites = listView_PrimeCheckResults.Items.Count - CalculateTotalPrimes(); //Clever Logic :)
 
-            if(totalComposites <= 0)
+            if(totalComposites <= 0) //Check if the listView contains no results.
             {
                 label_totalComposites.Text = "Total Composites: 0";
 
             }
             else
             {
+                //If the list view is not empty, display the total number of composite number, and calculate the percentage of composite numbers.
                 label_totalComposites.Text = "Total Composites: " + totalComposites + "\nComposite: " + Math.Round((double)totalComposites / listView_PrimeCheckResults.Items.Count * 100) + "%";
 
             }
         }
 
+
+        /// <summary>
+        /// Calculates the total number of primes in the list view.
+        /// </summary>
+        /// <returns>The total number of primes in the list view</returns>
         public int CalculateTotalPrimes()
         {
-            int totalPrimes = 0;
-            foreach(ListViewItem item in listView_PrimeCheckResults.Items)
+            int totalPrimes = 0; //Counter variable
+            foreach(ListViewItem item in listView_PrimeCheckResults.Items)  //Look at each item in the list view.
             {
-                if(((PrimeResult)item.Tag).IsPrime)
+                if(((PrimeResult)item.Tag).IsPrime)//Each spot in the list view contains a PrimeResult object, which contains a IsPrime property.
                 {
-                    totalPrimes++;
+                    totalPrimes++; //If a prime is found, increment the counter variable.
                 }
                     
             }
@@ -115,7 +151,11 @@ namespace dicrisif_Assignment08
             return totalPrimes;
         }
 
-        public void CheckNumber(BigInteger num)
+        /// <summary>
+        /// Calls our IsPrime method in the BigIntPrimeChecker class and displays the result in the listView control
+        /// </summary>
+        /// <param name="num"></param>
+        public void CheckNumAndDisplayResult(BigInteger num)
         {
 
             if(listView_PrimeCheckResults.Items.Count > 0)
@@ -128,32 +168,28 @@ namespace dicrisif_Assignment08
                 
 
             }
-            Boolean isPrime = BigIntPrimeChecker.isPrime(num);
+            Boolean isPrime = BigIntPrimeChecker.isPrime(num); //Calling our prime checker method located in the prime checker I created in a previous assignment.
 
-            PrimeResult result = new PrimeResult(num, isPrime);
+            PrimeResult result = new PrimeResult(num, isPrime); //The prime result object stores a number, and whether or not the number is prime. 
             
-            listView_PrimeCheckResults.Items.Add(result.ToString());
-            listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].Tag = result;
+            listView_PrimeCheckResults.Items.Add(result.ToString());//Add the result to the list.  
+            listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].Tag = result; //Causes the item added in the previous statement to associate with an object  (.Tag).
 
-            if (result.ToString().Length > 30)
+            if (result.ToString().Length > 30) //If the number is too large, we shrink the text size.  This could be improved in the future.
             {
-                listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].Font = new Font("Veranda", 8);
+                listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].Font = new Font("Veranda", 8); //Give the list view entry a new font.
             }
 
 
-            if (isPrime) { listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].BackColor = Color.Green;}
-            else { listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].BackColor = Color.Red; }
+            if (isPrime) { listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].BackColor = Color.Green;} //Green backround color if the listView entry is prime.
+            else { listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].BackColor = Color.Red; } //Red backround color if the number is composite.
 
-            textBox_NumberToCheck.Text = "";
-            textBox_NumberToCheck.Select();
+            textBox_NumberToCheck.Text = ""; //Clear the text box.
+            textBox_NumberToCheck.Select(); //Automatically selects the text box to allow the user to enter a new number.
 
             listView_PrimeCheckResults.EnsureVisible(listView_PrimeCheckResults.Items.Count - 1);
             DetermineExportStatus();
-            UpdateStatistics();
-
-
-
-
+            UpdateStatistics(); //After a new result is entered, we need to update the labels showing the total entrys, primes, and composites in the listView control.
 
         }
 
@@ -264,7 +300,7 @@ namespace dicrisif_Assignment08
             {
                 try
                 {
-                    CheckNumber((BigInteger.Parse(textBox_NumberToCheck.Text)));
+                    CheckNumAndDisplayResult((BigInteger.Parse(textBox_NumberToCheck.Text)));
                     e.Handled = e.SuppressKeyPress = true;
                 }
                 catch
@@ -303,7 +339,7 @@ namespace dicrisif_Assignment08
 
             foreach(PrimeResult result in resultArray)
             {
-                CheckNumber(result.Number);
+                CheckNumAndDisplayResult(result.Number);
             }
             if(listView_PrimeCheckResults.Items.Count > 0)
             {
@@ -354,20 +390,6 @@ namespace dicrisif_Assignment08
             return result;
         }
 
-        private void FolderBrowserDialog_ChooseResultLocation_HelpRequest(object sender, EventArgs e)
-        {
-
-        }
-
-        private void RichTextBox_ResultStats_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TableLayoutPanel_Statistics_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void Label1_Click(object sender, EventArgs e)
         {
@@ -387,7 +409,7 @@ namespace dicrisif_Assignment08
                         BigInteger result = 0;
                         
                         if (BigInteger.TryParse(sr.ReadLine(), out result)){
-                            CheckNumber(BigInteger.Parse(result.ToString()));
+                            CheckNumAndDisplayResult(BigInteger.Parse(result.ToString()));
 
                         }
                     }

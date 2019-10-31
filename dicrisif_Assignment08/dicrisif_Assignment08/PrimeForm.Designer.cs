@@ -1,6 +1,6 @@
 ﻿namespace dicrisif_Assignment08
 {
-    partial class form_MainForm
+    partial class form_PrimeForm
     {
         /// <summary>
         /// Required designer variable.
@@ -56,7 +56,7 @@
             this.btn_CheckNum.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btn_CheckNum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
             this.btn_CheckNum.Location = new System.Drawing.Point(388, 32);
-            this.btn_CheckNum.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.btn_CheckNum.Margin = new System.Windows.Forms.Padding(1);
             this.btn_CheckNum.Name = "btn_CheckNum";
             this.btn_CheckNum.Size = new System.Drawing.Size(100, 48);
             this.btn_CheckNum.TabIndex = 0;
@@ -123,7 +123,7 @@
             this.button_SortResults.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.button_SortResults.FlatAppearance.BorderSize = 20;
             this.button_SortResults.Location = new System.Drawing.Point(1, 1);
-            this.button_SortResults.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button_SortResults.Margin = new System.Windows.Forms.Padding(1);
             this.button_SortResults.Name = "button_SortResults";
             this.button_SortResults.Size = new System.Drawing.Size(98, 53);
             this.button_SortResults.TabIndex = 8;
@@ -135,7 +135,7 @@
             // 
             this.button_RemovePrimes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.button_RemovePrimes.Location = new System.Drawing.Point(1, 100);
-            this.button_RemovePrimes.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button_RemovePrimes.Margin = new System.Windows.Forms.Padding(1);
             this.button_RemovePrimes.Name = "button_RemovePrimes";
             this.button_RemovePrimes.Size = new System.Drawing.Size(118, 27);
             this.button_RemovePrimes.TabIndex = 6;
@@ -147,7 +147,7 @@
             // 
             this.button_RemoveComposites.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.button_RemoveComposites.Location = new System.Drawing.Point(1, 129);
-            this.button_RemoveComposites.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button_RemoveComposites.Margin = new System.Windows.Forms.Padding(1);
             this.button_RemoveComposites.Name = "button_RemoveComposites";
             this.button_RemoveComposites.Size = new System.Drawing.Size(118, 28);
             this.button_RemoveComposites.TabIndex = 7;
@@ -159,7 +159,7 @@
             // 
             this.button_ClearAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.button_ClearAll.Location = new System.Drawing.Point(1, 159);
-            this.button_ClearAll.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button_ClearAll.Margin = new System.Windows.Forms.Padding(1);
             this.button_ClearAll.Name = "button_ClearAll";
             this.button_ClearAll.Size = new System.Drawing.Size(118, 34);
             this.button_ClearAll.TabIndex = 5;
@@ -173,7 +173,7 @@
             this.panel_UserInput.Controls.Add(this.textBox_NumberToCheck);
             this.panel_UserInput.Controls.Add(this.btn_CheckNum);
             this.panel_UserInput.Location = new System.Drawing.Point(544, 90);
-            this.panel_UserInput.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.panel_UserInput.Margin = new System.Windows.Forms.Padding(1);
             this.panel_UserInput.Name = "panel_UserInput";
             this.panel_UserInput.Size = new System.Drawing.Size(585, 113);
             this.panel_UserInput.TabIndex = 5;
@@ -245,7 +245,7 @@
             this.button_Import.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
             this.button_Import.Font = new System.Drawing.Font("Rockwell", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Import.Location = new System.Drawing.Point(932, 374);
-            this.button_Import.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button_Import.Margin = new System.Windows.Forms.Padding(1);
             this.button_Import.Name = "button_Import";
             this.button_Import.Size = new System.Drawing.Size(124, 101);
             this.button_Import.TabIndex = 8;
@@ -257,7 +257,7 @@
             // 
             this.openFileDialog_ImportNumbers.FileName = "openFileDialog1";
             // 
-            // form_MainForm
+            // form_PrimeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -269,10 +269,10 @@
             this.Controls.Add(this.panel_UserInput);
             this.Controls.Add(this.panel_ButtonPanel);
             this.Controls.Add(this.listView_PrimeCheckResults);
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
-            this.Name = "form_MainForm";
+            this.Margin = new System.Windows.Forms.Padding(1);
+            this.Name = "form_PrimeForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Total Time:";
+            this.Text = "Prime Checker";
             this.Load += new System.EventHandler(this.Form_MainForm_Load);
             this.panel_ButtonPanel.ResumeLayout(false);
             this.panel_UserInput.ResumeLayout(false);
