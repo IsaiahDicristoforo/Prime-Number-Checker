@@ -1,25 +1,19 @@
 ﻿/*
  * Isaiah Dicristoforo
  * dicrisif@mail.uc.edu
- * ASSIGNMENT 04
+ * ASSIGNMENT 08
  * 
  * Professor Nicholson
  * IT 3045: Contemporary Programming, Fall 2019
  * 
- * DUE: 09/26/2019
+ * DUE: 10/31/2019, 3:30 P.M
  * 
- * Description:  This program contains a method called isPrime which accepts a Big Integer as a parameter and returns true if the 
+ * Description:  This class contains a method called isPrime which accepts a Big Integer as a parameter and returns true if the 
  * Big Integer is prime, and false otherwise.  I optimized the method by using multi-threading.  One task/thread checked the numbers below
  * half the square root of num (the number we are checking for primality), the other thread checked the numbers above half the square root 
  * of num.  This lowered run time of my program significantly. However, and the end of they day I am still implementing the brute force
  * method of looping through numbers, so this algorithim has its limitations.  I found that debugging a multi-threaded algorithim was
- * significantly more challenging than debugging a program that runs on a single thread.  I can't say for certain that my algorithim works,
- * but I can say that I ran a massive amount of tests.  My goal when testing this algorthim was not to just test random numbers, but validate
- * the result and see if the number I was testing was actually prime.  Because of this, I utilized many large files of prime numbers I found
- * online to test.  I have a large test list of larger primes attached to this project that I used.  I had my program throw an exception
- * if isPrime returned false when checking the list of primes.  Thankfully I did not get an exception, which meant my algorthim acheived 
- * at least some degree of accuracy.  I used a similar approach for testing composite numbers.  I performed many more tests than the ones shown below
- * in my test main.  I deleted a lot of my tests, because my test main is strictly for me; the actual Main method will be provided to me in class.
+ * significantly more challenging than debugging a program that runs on a single thread.
  * 
  * 
  * Sources:
@@ -34,7 +28,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Numerics;
 using System.Threading.Tasks;
 
