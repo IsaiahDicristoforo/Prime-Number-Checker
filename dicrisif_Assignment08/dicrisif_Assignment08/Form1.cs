@@ -25,6 +25,7 @@
  * 
  * https://stackoverflow.com/questions/11624298/how-to-use-openfiledialog-to-select-a-folder/11624322
  * 
+ * https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-open-files-using-the-openfiledialog-component
  */
 
 
@@ -38,6 +39,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -60,17 +62,62 @@ namespace dicrisif_Assignment08
             {
                 CheckNumber(BigInteger.Parse(textBox_NumberToCheck.Text));
 
+
             }
             catch
             {
                 AlertInvalidInput();
             }
-     
 
+
+        }
+
+        public void UpdateStatistics()
+        {
+            label_totalNums.Text = "Total Numbers: " + listView_PrimeCheckResults.Items.Count;
+
+            if (CalculateTotalPrimes() == 0)
+            {
+                label_TotalPrimes.Text = "Total Primes:  0";
+            }
+            else
+            {
+                label_TotalPrimes.Text = "Total Primes: " + CalculateTotalPrimes().ToString() + "\nPrime:" + Math.Round((double)CalculateTotalPrimes() / listView_PrimeCheckResults.Items.Count * 100) + "%";
+
+            }
+
+            int totalComposites = listView_PrimeCheckResults.Items.Count - CalculateTotalPrimes();
+
+            if(totalComposites <= 0)
+            {
+                label_totalComposites.Text = "Total Composites: 0";
+
+            }
+            else
+            {
+                label_totalComposites.Text = "Total Composites: " + totalComposites + "\nComposite: " + Math.Round((double)totalComposites / listView_PrimeCheckResults.Items.Count * 100) + "%";
+
+            }
+        }
+
+        public int CalculateTotalPrimes()
+        {
+            int totalPrimes = 0;
+            foreach(ListViewItem item in listView_PrimeCheckResults.Items)
+            {
+                if(((PrimeResult)item.Tag).IsPrime)
+                {
+                    totalPrimes++;
+                }
+                    
+            }
+
+            return totalPrimes;
         }
 
         public void CheckNumber(BigInteger num)
         {
+
             if(listView_PrimeCheckResults.Items.Count > 0)
             {
                 foreach(ListViewItem item in listView_PrimeCheckResults.Items)
@@ -84,6 +131,7 @@ namespace dicrisif_Assignment08
             Boolean isPrime = BigIntPrimeChecker.isPrime(num);
 
             PrimeResult result = new PrimeResult(num, isPrime);
+            
             listView_PrimeCheckResults.Items.Add(result.ToString());
             listView_PrimeCheckResults.Items[listView_PrimeCheckResults.Items.Count - 1].Tag = result;
 
@@ -100,8 +148,10 @@ namespace dicrisif_Assignment08
             textBox_NumberToCheck.Select();
 
             listView_PrimeCheckResults.EnsureVisible(listView_PrimeCheckResults.Items.Count - 1);
-
             DetermineExportStatus();
+            UpdateStatistics();
+
+
 
 
 
@@ -124,6 +174,7 @@ namespace dicrisif_Assignment08
             }
 
             DetermineExportStatus();
+            UpdateStatistics();
 
 
 
@@ -139,8 +190,9 @@ namespace dicrisif_Assignment08
 
         private void Form_MainForm_Load(object sender, EventArgs e)
         {
-            
+            UpdateStatistics();
             DetermineExportStatus();
+           
         }
 
 
@@ -149,15 +201,17 @@ namespace dicrisif_Assignment08
             ClearAllFromResultList();
 
             DetermineExportStatus();
+            UpdateStatistics();
+
         }
 
         public void DetermineExportStatus()
         {
             if(listView_PrimeCheckResults.Items.Count == 0)
             {
-                button_ExportToTextFile.Hide();
+                button_ExportToTextFile.Enabled = false;
             }
-            else { button_ExportToTextFile.Show(); }
+            else { button_ExportToTextFile.Enabled = true; }
         }
 
         private void ClearAllFromResultList()
@@ -182,6 +236,8 @@ namespace dicrisif_Assignment08
                 }
             }
             DetermineExportStatus();
+            UpdateStatistics();
+
         }
 
         private void Button_RemoveComposites_Click(object sender, EventArgs e)
@@ -197,6 +253,8 @@ namespace dicrisif_Assignment08
                 }
             }
             DetermineExportStatus();
+            UpdateStatistics();
+
         }
 
         private void TextBox_NumberToCheck_KeyDown(object sender, KeyEventArgs e)
@@ -222,6 +280,7 @@ namespace dicrisif_Assignment08
 
         private void AlertInvalidInput()
         {
+           
             MessageBox.Show("INVALID INPUT", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             textBox_NumberToCheck.Text = "";
         }
@@ -298,6 +357,47 @@ namespace dicrisif_Assignment08
         private void FolderBrowserDialog_ChooseResultLocation_HelpRequest(object sender, EventArgs e)
         {
 
+        }
+
+        private void RichTextBox_ResultStats_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TableLayoutPanel_Statistics_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Button_Import_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog_ImportNumbers.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(openFileDialog_ImportNumbers.FileName);
+
+                    while (!sr.EndOfStream)
+                    {
+                        BigInteger result = 0;
+                        
+                        if (BigInteger.TryParse(sr.ReadLine(), out result)){
+                            CheckNumber(BigInteger.Parse(result.ToString()));
+
+                        }
+                    }
+                }
+                catch (SecurityException ex)
+                {
+                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                    $"Details:\n\n{ex.StackTrace}");
+                }
+            }
         }
     }
     }

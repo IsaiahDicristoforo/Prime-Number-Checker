@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace dicrisif_Assignment08
 {
+
     class PrimeResult : IComparable
     {
 
-      
+
         private BigInteger numberChecked;
         private bool isPrime;
 
@@ -18,7 +19,10 @@ namespace dicrisif_Assignment08
         {
             this.numberChecked = numberChecked;
             this.isPrime = isPrime;
-        }
+
+
+        } 
+    
 
         public BigInteger Number
         {
@@ -44,6 +48,7 @@ namespace dicrisif_Assignment08
 
         public static int ComparePrimeResults(PrimeResult result1, PrimeResult result2)
         {
+
             if(result1.Number > result2.numberChecked)
             {
                 return 1;
